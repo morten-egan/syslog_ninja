@@ -20,7 +20,7 @@ as
 
     dbms_application_info.set_action('construct_syslog_packet');
 
-    l_ret_var := '<' || to_char(pri) || '>' || to_char(sysdate, 'Mon dd hh24:mi:ss') || ' ' || hostname || ' ' || substr(tag, 1, 32) || ': ';
+    l_ret_var := '<' || to_char(l_pri) || '>' || to_char(sysdate, 'Mon dd hh24:mi:ss') || ' ' || l_hostname || ' ' || substr(tag, 1, 32) || ': ';
     l_ret_var := l_ret_var || substr(message, 1, 1024 - length(l_ret_var));
 
     dbms_application_info.set_action(null);
@@ -44,11 +44,24 @@ as
 
   as
 
-    l_ret_var               number;
+    l_ret_var               number := 0;
+    l_packet                varchar2(1024) := construct_syslog_packet(message, facility, severity, tag);
+    l_conn                  utl_tcp.connection;
+    l_conn_ret              pls_integer;
 
   begin
 
     dbms_application_info.set_action('l');
+
+    l_conn := utl_tcp.open_connection(
+      remote_host         =>      d_syslog_host
+      , remote_port       =>      d_syslog_port
+      , charset           =>      'US7ASCII'
+    );
+
+    l_conn_ret := utl_tcp.write_line(l_conn, l_packet);
+
+    utl_tcp.close_connection(l_conn);
 
     dbms_application_info.set_action(null);
 

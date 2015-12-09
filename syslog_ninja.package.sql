@@ -10,7 +10,7 @@ as
   npg_version       varchar2(250) := '0.0.1';
 
   -- deamon settings
-	d_syslog_host                      varchar2(250) := 'localhost';
+	d_syslog_host                      varchar2(250) := '127.0.0.1';
 	d_syslog_port                      pls_integer := 601;
 	d_syslog_secure                    number := 0;
 	d_secure_wallet_path               varchar2(1024) := null;
@@ -38,6 +38,16 @@ as
 	f_local_use_5                      constant		pls_integer := 21;
 	f_local_use_6                      constant		pls_integer := 22;
 	f_local_use_7                      constant		pls_integer := 23;
+
+  -- Severity codes
+	s_emergency                        constant		pls_integer := 0;
+	s_alert                            constant		pls_integer := 1;
+	s_critical                         constant		pls_integer := 2;
+	s_error                            constant		pls_integer := 3;
+	s_warning                          constant		pls_integer := 4;
+	s_notice                           constant		pls_integer := 5;
+	s_informational                    constant		pls_integer := 6;
+	s_debug                            constant		pls_integer := 7;
 
   -- Tag values
 	t_client_identifier                varchar2(32) := substr(sys_context('USERENV', 'CLIENT_IDENTIFIER'), 1, 32);

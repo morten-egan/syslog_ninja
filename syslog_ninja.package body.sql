@@ -34,7 +34,7 @@ as
 
   end construct_syslog_packet;
 
-  function l (
+  function lf (
     message                 varchar2
     , severity              pls_integer         default s_warning
     , facility              pls_integer         default f_user_level
@@ -51,7 +51,7 @@ as
 
   begin
 
-    dbms_application_info.set_action('l');
+    dbms_application_info.set_action('lf');
 
     l_conn := utl_tcp.open_connection(
       remote_host         =>      d_syslog_host
@@ -72,7 +72,33 @@ as
         dbms_application_info.set_action(null);
         raise;
 
-  end l;
+  end lf;
+
+  procedure lp (
+    message                 varchar2
+    , severity              pls_integer         default s_warning
+    , facility              pls_integer         default f_user_level
+    , tag                   varchar2            default t_default
+  )
+
+  as
+
+    f_ret                   number;
+
+  begin
+
+    dbms_application_info.set_action('lf');
+
+    f_ret := lf(message, severity, facility, tag);
+
+    dbms_application_info.set_action(null);
+
+    exception
+      when others then
+        dbms_application_info.set_action(null);
+        raise;
+
+  end lp;
 
 begin
 

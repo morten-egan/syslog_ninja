@@ -56,17 +56,31 @@ as
   t_db_name					                 varchar2(32) := substr(sys_context('USERENV', 'DB_NAME'), 1, 32);
   t_default					                 varchar2(32) := t_db_name;
 
-  /** Send a message to the syslog
+  /** Send a message to the syslog, using a function
   * @author Morten Egan
   * @return number 0 if success, -1 if fail
   */
-  function l (
+  function lf (
     message                 varchar2
     , severity              pls_integer         default s_warning
     , facility              pls_integer         default f_user_level
     , tag                   varchar2            default t_default
   )
   return number;
+
+  /** Send a message to the syslog, using a procedure
+  * @author Morten Egan
+  * @param message The message we want to write to the syslog
+  * @param severity The severity of the message
+  * @param facility The facility to mark the message to
+  * @param tag What tag to use in the message
+  */
+  procedure lp (
+    message                 varchar2
+    , severity              pls_integer         default s_warning
+    , facility              pls_integer         default f_user_level
+    , tag                   varchar2            default t_default
+  );
 
 end syslog_ninja;
 /

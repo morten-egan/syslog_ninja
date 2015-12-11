@@ -7,7 +7,18 @@ But he will do soon.
 
 == Summary
 
+syslog_ninja is a plsql implementation to integrate the database directly with syslog servers. This way we can write errors directly to syslog
+, for other monitoring applications to read (BMC, Tivoli, etc.). The less you have to configure in these monitoring tools the better.
+
 == Pre-requisites
+
+Any schema installing this package needs the following oracle privileges:
+
+* create procedure
+* execute on utl_tcp
+
+Aside from this, the schema needs to be part of a network ACL that allows resolve and connect, to the host
+running the syslog server (look at acl.sql for an example of this).
 
 == Installation
 

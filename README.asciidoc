@@ -1,10 +1,6 @@
 = syslog_ninja
 Morten Egan <morten@plsql.ninja>
 
-[NOTE]
-Since this is the first check-in, not much info has been added yet.
-But he will do soon.
-
 == Summary
 
 syslog_ninja is a plsql implementation to integrate the database directly with syslog servers. This way we can write errors directly to syslog
@@ -22,6 +18,44 @@ running the syslog server (look at acl.sql for an example of this).
 
 == Installation
 
+To install the package simply install the two sql files from this repository, under any schema that fullfills the above pre-requisites.
+
+@"syslog_ninja.package.sql"
+@"syslog_ninja.package body.sql"
+
 == Procedures and Functions
 
+[source,plsql.oracle]
+function lf (
+  message                 varchar2
+  , severity              pls_integer         default s_warning
+  , facility              pls_integer         default f_user_level
+  , tag                   varchar2            default t_default
+)
+return number;
+
+[source,plsql.oracle]
+procedure lp (
+  message                 varchar2
+  , severity              pls_integer         default s_warning
+  , facility              pls_integer         default f_user_level
+  , tag                   varchar2            default t_default
+);
+
 == Examples
+
+[source,plsql.oracle]
+-- Default invocation of function
+select syslog_ninja.lf('Just a function warning') from dual;
+-- Default invocation of procedure
+exec syslog_ninja.lp('A default procedure warning');
+-- Setting the severity to critical:
+begin
+  syslog_ninja.lp(message => 'A critical message', severity => syslog_ninja.s_critical);
+end;
+/
+-- Changing the tag to current schema
+begin
+  syslog_ninja.lp(message => 'Tagged with schema instead of database name', tag => syslog_ninja.t_current_schema);
+end;
+/

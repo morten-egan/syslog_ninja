@@ -58,6 +58,10 @@ as
 
   /** Send a message to the syslog, using a function
   * @author Morten Egan
+  * @param message The message we want to write to the syslog
+  * @param severity The severity of the message
+  * @param facility The facility to mark the message to
+  * @param tag What tag to use in the message
   * @return number 0 if success, -1 if fail
   */
   function lf (

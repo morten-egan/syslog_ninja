@@ -21,6 +21,7 @@ running the syslog server (look at acl.sql for an example of this).
 To install the package simply install the two sql files from this repository, under any schema that fullfills the above pre-requisites.
 
 @"syslog_ninja.package.sql"
+
 @"syslog_ninja.package body.sql"
 
 == Procedures and Functions
